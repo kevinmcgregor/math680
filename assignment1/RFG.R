@@ -31,8 +31,8 @@ generate_re = function(N) {
 }
 
 #Generate the coefficients a1...al in the sum term
-# l is the number of terms in the sum... defaults to 20
-generate_a = function(l=20) {
+# l is the number of terms in the sum
+generate_a = function(l) {
   return(runif(l,-1,1))
 }
 
@@ -43,8 +43,8 @@ generate_r = function() {
 
 #Generate the p_l
 # p is the number of predictors
-# l is the number of terms in the sum... defaults to 20
-generate_pl = function(p,l=20) {
+# l is the number of terms in the sum
+generate_pl = function(p,l) {
   rvec = replicate(l, generate_r())
   pl = pmin(floor(1.5+rvec),p)
   return(pl)
