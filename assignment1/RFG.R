@@ -1,10 +1,14 @@
 #Random function generator from Friedman 2001
 
 #Main random function generator
-RFG = function(N=100,p=10) {
+RFG = function(N=100,p=10,l=20) {
   #Input data
   x = generate_x(N, rep(0,p), diag(p))
+  error = generate_re(N)
   
+  #Creating the random function
+  a = generate_a(l)
+  pl = generate_pl(l)
   
 }
 
@@ -26,5 +30,23 @@ generate_re = function(N) {
   return(rnorm(N))
 }
 
+#Generate the coefficients a1...al in the sum term
+# l is the number of terms in the sum... defaults to 20
+generate_a = function(l=20) {
+  return(runif(l,-1,1))
+}
 
+#Generate r
+generate_r = function() {
+  return(rexp(1,0.5))
+}
+
+#Generate the p_l
+# p is the number of predictors
+# l is the number of terms in the sum... defaults to 20
+generate_pl = function(p,l=20) {
+  rvec = replicate(l, generate_r())
+  pl = pmin(floor(1.5+rvec),p)
+  return(pl)
+}
 
