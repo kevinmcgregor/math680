@@ -2,19 +2,24 @@
 #Kevin McGregor - MATH680 HW1 - Due Sept 16th, 2015
 
 #Main function for random function generator
+#Returns data frame with first column y and remaining columns x_1 through x_p
 RFG = function(N=100,p=10,l=20) {
+  if (!is.numeric(N) | !is.numeric(p) | !is.numeric(l)) stop("N, p, and l must be numeric")
+  if (N <= 0 | N != round(N)) stop("N must be a positive integer")
+  if (p <= 0 | p != round(p)) stop("p must be a positive integer")
+  if (l <= 0 | l != round(l)) stop("l must be a positive integer")
   #Input data
   x = generate_x(N, rep(0,p), diag(p))
   error = generate_re(N)
   
   #Creating the random function
   a = generate_a(l)
-  pl = generate_pl(l)
+  pl = generate_pl(p,l)
+  gl = generate_gl(x,pl)
+  fx = gl %*% a
   
-  
-  # SHOULD EVENTUALLY RETURN THIS...
-  #y = fx + error
-  #return(data.frame(y,x))
+  y = fx + error
+  return(data.frame(y,x))
 }
 
 #Generates observed variables x from multivariate normal distribution.
@@ -22,8 +27,6 @@ RFG = function(N=100,p=10,l=20) {
 # mu is a vector of means for the multivar normal distribution
 # sigma is a square matrix of the same dimension as mu
 generate_x = function(N, mu, sigma) {
-  if (N <= 0) stop("N must be positive")
-  if (length(mu)!=NROW(sigma) | length(mu)!=NCOL(sigma)) stop("mu and sigma are not of the same dimension")
   require(MASS)
   return(mvrnorm(N, mu, sigma))
 }
@@ -31,7 +34,6 @@ generate_x = function(N, mu, sigma) {
 #Generates random error term
 # N is the sample size
 generate_re = function(N) {
-  if (N <= 0) stop("N must be positive")
   return(rnorm(N))
 }
 
@@ -55,7 +57,6 @@ generate_pl = function(p,l) {
   return(pl)
 }
 
-#### z_l NEEDS TO BE A VECTOR?????!?!?!?!?!??
 #Generate the z_l
 # x is the input data
 # pl is the number of (permuted) columns of x to include in each zl
@@ -87,6 +88,7 @@ generate_mul = function(N,pl) {
 
 #Generates D_l
 # pl is the number of (permuted) columns of x included in each zl
+# returns a list of length l
 generate_Dl = function(pl) {
   l = length(pl)
   
@@ -101,6 +103,9 @@ generate_Dl = function(pl) {
   return(Dl)
 }
 
+#Generate Vl
+# pl is the number of (permuted) columns of x included in each zl
+# returns a list of length l
 generate_Vl = function(pl) {
   l = length(pl)
   Dl = generate_Dl(pl)
@@ -119,6 +124,10 @@ generate_Vl = function(pl) {
   return(Vl)
 }
 
+#Generate gl
+# x is the input data
+# pl is the number of (permuted) columns of x included in each zl
+# returns an Nxl matrix
 generate_gl = function(x,pl) {
   N = NROW(x)
   l = length(pl)
@@ -131,9 +140,9 @@ generate_gl = function(x,pl) {
   curVl = NULL
   gl = matrix(0, N, l)
   for (i in 1:l) {
-    curZl = matrix(unlist(zl[l]),ncol=pl[l],byrow=TRUE)
-    curmul = matrix(unlist(mul[l]),ncol=pl[l],byrow=TRUE)
-    curVl = matrix(unlist(Vl[l]),ncol=pl[l],byrow=TRUE)
+    curZl = matrix(unlist(zl[i]),ncol=pl[i],byrow=TRUE)
+    curmul = matrix(unlist(mul[i]),ncol=pl[i],byrow=TRUE)
+    curVl = matrix(unlist(Vl[i]),ncol=pl[i],byrow=TRUE)
     for (j in 1:N) {
       gl[j,i] = exp(-1/2 * t(curZl[j,]-curmul[j,]) %*% curVl %*% (curZl[j,]-curmul[j,]) )
     }
