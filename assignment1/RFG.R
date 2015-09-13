@@ -1,4 +1,5 @@
 #Random function generator from Friedman 2001
+#Kevin McGregor - MATH680 HW1 - Due Sept 16th, 2015
 
 #Main random function generator
 RFG = function(N=100,p=10,l=20) {
@@ -9,6 +10,7 @@ RFG = function(N=100,p=10,l=20) {
   #Creating the random function
   a = generate_a(l)
   pl = generate_pl(l)
+  zl = generate_zl(x,pl)
   
 }
 
@@ -48,5 +50,18 @@ generate_pl = function(p,l) {
   rvec = replicate(l, generate_r())
   pl = pmin(floor(1.5+rvec),p)
   return(pl)
+}
+
+generate_zl = function(x, pl) {
+  l = length(pl)
+  p = NCOL(x)
+  
+  zl = list()
+  perm=NULL
+  for (i in 1:l) {
+    perm = sample(p)
+    zl[i] = list(x[,perm[1:pl[i]]])
+  }
+  return(zl)
 }
 
