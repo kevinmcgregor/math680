@@ -1,7 +1,7 @@
 #Random function generator from Friedman 2001
 #Kevin McGregor - MATH680 HW1 - Due Sept 16th, 2015
 
-#Main random function generator
+#Main function for random function generator
 RFG = function(N=100,p=10,l=20) {
   #Input data
   x = generate_x(N, rep(0,p), diag(p))
@@ -10,7 +10,6 @@ RFG = function(N=100,p=10,l=20) {
   #Creating the random function
   a = generate_a(l)
   pl = generate_pl(l)
-  zl = generate_zl(x,pl)
   
   
   # SHOULD EVENTUALLY RETURN THIS...
@@ -56,6 +55,7 @@ generate_pl = function(p,l) {
   return(pl)
 }
 
+#### z_l NEEDS TO BE A VECTOR?????!?!?!?!?!??
 #Generate the z_l
 # x is the input data
 # pl is the number of (permuted) columns of x to include in each zl
@@ -85,6 +85,8 @@ generate_mul = function(N,pl) {
   return(mul)
 }
 
+#Generates D_l
+# pl is the number of (permuted) columns of x included in each zl
 generate_Dl = function(pl) {
   l = length(pl)
   
@@ -99,7 +101,45 @@ generate_Dl = function(pl) {
   return(Dl)
 }
 
+generate_Vl = function(pl) {
+  l = length(pl)
+  Dl = generate_Dl(pl)
+  
+  Vl = list()
+  curQ = NULL
+  curDl = NULL
+  for (i in 1:l) {
+    #Random orthonormal matrix
+    curQ = genQ(pl[i])
+    #Also need to get Dl to proper form for matrix mult
+    curDl = matrix(unlist(Dl[i]),pl[i],pl[i])
+    Vl[i] = list(curQ %*% curDl %*% t(curQ))
+  }
+  
+  return(Vl)
+}
 
+generate_gl = function(x,pl) {
+  N = NROW(x)
+  l = length(pl)
+  zl = generate_zl(x,pl)
+  mul = generate_mul(N,pl)
+  Vl = generate_Vl(pl)
+  
+  curZl = NULL
+  curmul = NULL
+  curVl = NULL
+  gl = matrix(0, N, l)
+  for (i in 1:l) {
+    curZl = matrix(unlist(zl[l]),ncol=pl[l],byrow=TRUE)
+    curmul = matrix(unlist(mul[l]),ncol=pl[l],byrow=TRUE)
+    curVl = matrix(unlist(Vl[l]),ncol=pl[l],byrow=TRUE)
+    for (j in 1:N) {
+      gl[j,i] = exp(-1/2 * t(curZl[j,]-curmul[j,]) %*% curVl %*% (curZl[j,]-curmul[j,]) )
+    }
+  }
+  return(gl)
+}
 
 
 
