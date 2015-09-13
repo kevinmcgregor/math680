@@ -12,6 +12,10 @@ RFG = function(N=100,p=10,l=20) {
   pl = generate_pl(l)
   zl = generate_zl(x,pl)
   
+  
+  # SHOULD EVENTUALLY RETURN THIS...
+  #y = fx + error
+  #return(data.frame(y,x))
 }
 
 #Generates observed variables x from multivariate normal distribution.
@@ -33,7 +37,7 @@ generate_re = function(N) {
 }
 
 #Generate the coefficients a1...al in the sum term
-# l is the number of terms in the sum
+# l is the number of terms in the overall sum
 generate_a = function(l) {
   return(runif(l,-1,1))
 }
@@ -45,13 +49,16 @@ generate_r = function() {
 
 #Generate the p_l
 # p is the number of predictors
-# l is the number of terms in the sum
+# l is the number of terms in the overall sum
 generate_pl = function(p,l) {
   rvec = replicate(l, generate_r())
   pl = pmin(floor(1.5+rvec),p)
   return(pl)
 }
 
+#Generate the z_l
+# x is the input data
+# pl is the number of (permuted) columns of x to include in each zl
 generate_zl = function(x, pl) {
   l = length(pl)
   p = NCOL(x)
@@ -64,4 +71,35 @@ generate_zl = function(x, pl) {
   }
   return(zl)
 }
+
+#Generate mu_l
+# N is the number of samples
+# pl is the number of (permuted) columns of x included in each zl
+generate_mul = function(N,pl) {
+  l = length(pl)
+  mul = list()
+  for (i in 1:l) {
+    #mu_l is generated using the same distribution as each row of x
+    mul[i] = list(generate_x(N,rep(0,pl[i]),diag(pl[i])))
+  }
+  return(mul)
+}
+
+generate_Dl = function(pl) {
+  l = length(pl)
+  
+  Dl = list()
+  for (i in 1:l) {
+    if (pl[i]>1){
+      Dl[i] = list(diag(runif(pl[i],0.1,2)))
+    } else {
+      Dl[i] = list(runif(1,0.1,2))
+    }
+  }
+  return(Dl)
+}
+
+
+
+
 
