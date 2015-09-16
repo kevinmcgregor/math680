@@ -93,11 +93,14 @@ generate_Dl = function(pl) {
   l = length(pl)
   
   Dl = list()
+  unif = NULL
   for (i in 1:l) {
     if (pl[i]>1){
-      Dl[i] = list(diag(runif(pl[i],0.1,2)))
+      unif = runif(pl[i],0.1,2)
+      Dl[i] = list(diag(unif^2))
     } else {
-      Dl[i] = list(runif(1,0.1,2))
+      unif = runif(pl[i],0.1,2)
+      Dl[i] = list(unif^2)
     }
   }
   return(Dl)
