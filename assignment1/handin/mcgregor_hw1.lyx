@@ -22,7 +22,7 @@
 \graphics default
 \default_output_format default
 \output_sync 0
-\bibtex_command default
+\bibtex_command bibtex
 \index_command default
 \paperfontsize default
 \spacing single
@@ -74,7 +74,6 @@
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
-\bullet 0 0 0 -1
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -344,7 +343,7 @@ $f$
 
 \end_inset
 
- functions is randomlygenerated as a linear combination of functions 
+ functions is randomly generated as a linear combination of functions 
 \begin_inset Formula $\{g_{l}\}_{1}^{20}$
 \end_inset
 
@@ -705,15 +704,134 @@ In this exercise you will probably use the following R functions:
 \begin_layout Itemize
 
 \family typewriter
-rexp
+rexp, runif, rnorm
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+floor
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+qr.Q, qr
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+diag
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+sample
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
-To 
+To generate the uniformly distributed random orthonormal matrix 
+\begin_inset Formula $\mathbf{U}_{i}$
+\end_inset
+
+ please see this post 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://math.stackexchange.com/questions/138512/sampling-q-uniformly-where-qtq-i"
+
+\end_inset
+
+.
+ Specifically, you need to generate a Gaussian matrix 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$G$
+\end_layout
+
+\end_inset
+
+, and use QR decomposition to find thecorresponding 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+$Q$
+\end_layout
+
+\end_inset
+
+ matrix, which will be a uniformly distributed random orthonormal matrix.
+ Use R functions 
+\family typewriter
+qr.Q
+\family default
+ and 
+\family typewriter
+qr
+\family default
+ to achieve this.
+ Or much easier, you can just use the 
+\family typewriter
+genQ
+\family default
+ function in the package 
+\family typewriter
+bootSVD 
+\family default
+
+\begin_inset CommandInset href
+LatexCommand href
+target "https://cran.r-project.org/web/packages/bootSVD/index.html "
+
+\end_inset
+
+to do the same job.
+\end_layout
+
+\begin_layout Itemize
+If it is your first time using R, learn the above functions using their
+ online manuals beforestarting the actual coding.
 \end_layout
 
 \end_deeper
+\begin_layout Enumerate
+(Extra credit 40%) Walk through the following steps:
+\end_layout
+
+\begin_layout Itemize
+Download and install LyX.
+ To make LyX work correctly, Mac users may also need to install MacTeX 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://tug.org/mactex/"
+
+\end_inset
+
+ while Windows users may need to install MikTeX 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://miktex.org/"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Reproduce this document using LyX, make sure that all text contents, mathematica
+l formulas, references and typesetting (bullet, bold text, url, title, etc.)
+ are accurately reproduced.
+ However, the layout of the document do not need to be exactly the same.
+ (paper margin, linespace, etc.).
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
