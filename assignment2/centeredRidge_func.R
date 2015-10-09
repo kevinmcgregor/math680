@@ -16,7 +16,7 @@ centeredRidge = function(X,y,lam) {
   Xc = scale(X[,-1], scale = FALSE)
   yc = scale(y, scale = FALSE)
   ybar = mean(y)
-  Xbar = apply(Xc,2,mean)
+  Xbar = colMeans(Xc) #apply(Xc,2,mean)
   
   p = NCOL(Xc)
   n = length(y)
@@ -32,7 +32,7 @@ centeredRidge = function(X,y,lam) {
   u=sv$u; v=sv$v
   
   #calculate slopes and intercept
-  b = v%*%M%*%t(u)%*%y
+  b = v%*%M%*%crossprod(u,y)  #t(u)%*%y
   b1 = ybar - t(Xbar)%*%b
   
   return(list(b1=b1,b=b))
