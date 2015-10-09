@@ -69,10 +69,7 @@ X4 = cbind(1,Xtilde4)
 ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200) {
 
   n = NROW(x)
-  #Calculating true value of X times Beta
-  Xbeta = X%*%beta
   
-  y=rep(0,n)
   k5=k10=kn=NULL
   beta_ols=beta_k5=beta_k10=beta_kn=NULL
   loss_ols_b=loss_ols_xb=rep(0,numrep)
@@ -80,7 +77,6 @@ ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200) {
   loss_k10_b=loss_k10_xb=rep(0,numrep)
   loss_kn_b=loss_kn_xb=rep(0,numrep)
   for (i in 1:numrep) {
-    if (i%%10==0) cat(i)
     #Generate y
     y = Xbeta + rnorm(n, 0, sqrt(sigma.star))
     
@@ -116,6 +112,37 @@ ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200) {
   
   return(list(beta_ols,final))
 }
+
+# A function to generate y and calculate losses. Main function to be included in parallel step  
+getLosses = function(X, beta, lam.vec, sigma.star) {
+  
+  Xbeta = X%*%beta
+  #Generate y
+  y = Xbeta + rnorm(n, 0, sqrt(sigma.star))
+  
+  k5 = ridgeCrossval(X, y, lam.vec, 5)
+  k10 = ridgeCrossval(X, y, lam.vec, 10)
+  kn = ridgeCrossval(X, y, lam.vec, n)
+  
+  beta_ols = lm.fit(X, y)$coefficients
+  beta_k5 = c(k5$b1, k5$b)
+  beta_k10 = c(k10$b1, k10$b)
+  beta_kn = c(kn$b1, kn$b)
+  
+  loss_ols_b = sum((beta_ols-beta)^2)
+  loss_k5_b = sum((beta_k5-beta)^2)
+  loss_k10_b = sum((beta_k10-beta)^2)
+  loss_kn_b = sum((beta_kn-beta)^2)
+  
+  loss_ols_xb = sum((X%*%beta_ols-Xbeta)^2)
+  loss_k5_xb = sum((X%*%beta_k5-Xbeta)^2)
+  loss_k10_xb = sum((X%*%beta_k10-Xbeta)^2)
+  loss_kn_xb = sum((X%*%beta_kn-Xbeta)^2)
+  
+  return(c(loss_ols_b, loss_k5_b, loss_k10_b, loss_kn_b, loss_ols_xb, loss_k5_xb, loss_k10_xb, loss_kn_xb))
+}
+
+
 
 lambda = 10^(seq(-8,8,0.5))
 test = ridgeSim(X1,beta1,lambda,sigma.star)

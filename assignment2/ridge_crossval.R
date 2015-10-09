@@ -43,13 +43,15 @@ ridgeCrossval = function(X, y, lam.vec, K) {
 makeFolds = function(n,K) {
   
   #Divide into K groups of equal size, and any remainder gets randomly sorted into one of the K groups
-  init_groupsize = round(n/K)
+  init_groupsize = n%/%K
   num_remain = n%%K
-  fold = NULL
-  for (i in 1:K) {
-    fold = c(fold, rep(i, init_groupsize))
-  }
+  fold = rep(1:K, each=init_groupsize)
   fold = c(fold, sample(1:K, num_remain))
+  #fold = NULL
+  #for (i in 1:K) {
+  #  fold = c(fold, rep(i, init_groupsize))
+  #}
+  #fold = c(fold, sample(1:K, num_remain))
   
   #Randomly permute the group choices
   perm = sample(1:n)
