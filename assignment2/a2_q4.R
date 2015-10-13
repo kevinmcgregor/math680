@@ -66,40 +66,23 @@ X4 = cbind(1,Xtilde4)
 
 
 
-ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200) {
-
-  n = NROW(x)
+ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200, n.cores=1) {
+  require(parallel)
   
-  k5=k10=kn=NULL
-  beta_ols=beta_k5=beta_k10=beta_kn=NULL
-  loss_ols_b=loss_ols_xb=rep(0,numrep)
-  loss_k5_b=loss_k5_xb=rep(0,numrep)
-  loss_k10_b=loss_k10_xb=rep(0,numrep)
-  loss_kn_b=loss_kn_xb=rep(0,numrep)
-  for (i in 1:numrep) {
-    #Generate y
-    y = Xbeta + rnorm(n, 0, sqrt(sigma.star))
-    
-    k5 = ridgeCrossval(X, y, lam.vec, 5)
-    k10 = ridgeCrossval(X, y, lam.vec, 10)
-    kn = ridgeCrossval(X, y, lam.vec, n)
-    
-    beta_ols = lm.fit(X, y)$coefficients
-    beta_k5 = c(k5$b1, k5$b)
-    beta_k10 = c(k10$b1, k10$b)
-    beta_kn = c(kn$b1, kn$b)
-    
-    loss_ols_b[i] = sum((beta_ols-beta)^2)
-    loss_k5_b[i] = sum((beta_k5-beta)^2)
-    loss_k10_b[i] = sum((beta_k10-beta)^2)
-    loss_kn_b[i] = sum((beta_kn-beta)^2)
-    
-    loss_ols_xb[i] = sum((X%*%beta_ols-Xbeta)^2)
-    loss_k5_xb[i] = sum((X%*%beta_k5-Xbeta)^2)
-    loss_k10_xb[i] = sum((X%*%beta_k10-Xbeta)^2)
-    loss_kn_xb[i] = sum((X%*%beta_kn-Xbeta)^2)
-    
-  }
+  n = NROW(X)
+  Xbeta = X%*%beta
+  y = replicate(numrep, Xbeta + rnorm(n, 0, sqrt(sigma.star)), simplify=FALSE)
+  
+  losses = mclapply(y, FUN=getLosses, Xmat=X, beta=beta, Xbeta=Xbeta, lam.vec=lam.vec, sigma.star=sigma.star, mc.cores = n.cores)
+  
+  loss_ols_b = sapply(losses, function(x){x[1]})
+  loss_k5_b = sapply(losses, function(x){x[2]})
+  loss_k10_b = sapply(losses, function(x){x[3]})
+  loss_kn_b = sapply(losses, function(x){x[4]})
+  loss_ols_xb = sapply(losses, function(x){x[5]})
+  loss_k5_xb = sapply(losses, function(x){x[6]})
+  loss_k10_xb = sapply(losses, function(x){x[7]})
+  loss_kn_xb = sapply(losses, function(x){x[8]})
   
   #Means and standard errors of the different loss functions
   avg_loss = c(mean(loss_ols_b),mean(loss_k5_b),mean(loss_k10_b),mean(loss_kn_b),
@@ -110,21 +93,21 @@ ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200) {
   final = data.frame(avg_loss=avg_loss, se_loss=se_loss)
   rownames(final) = c("OLS_B","K5_B","K10_B","Kn_B","OLS_XB","K5_XB","K10_XB","Kn_XB")
   
-  return(list(beta_ols,final))
+  return(final)
 }
 
-# A function to generate y and calculate losses. Main function to be included in parallel step  
-getLosses = function(X, beta, lam.vec, sigma.star) {
+# A function to do the fitting and calculate losses. Main function to be included in parallel step  
+getLosses = function(y, Xmat, beta, Xbeta, lam.vec, sigma.star) {
   
-  Xbeta = X%*%beta
-  #Generate y
-  y = Xbeta + rnorm(n, 0, sqrt(sigma.star))
+  y=unlist(y)
+  n = NROW(Xmat)
   
-  k5 = ridgeCrossval(X, y, lam.vec, 5)
-  k10 = ridgeCrossval(X, y, lam.vec, 10)
-  kn = ridgeCrossval(X, y, lam.vec, n)
   
-  beta_ols = lm.fit(X, y)$coefficients
+  k5 = ridgeCrossval(Xmat, y, lam.vec, 5)
+  k10 = ridgeCrossval(Xmat, y, lam.vec, 10)
+  kn = ridgeCrossval(Xmat, y, lam.vec, n)
+  
+  beta_ols = lm.fit(Xmat, y)$coefficients
   beta_k5 = c(k5$b1, k5$b)
   beta_k10 = c(k10$b1, k10$b)
   beta_kn = c(kn$b1, kn$b)
@@ -134,21 +117,21 @@ getLosses = function(X, beta, lam.vec, sigma.star) {
   loss_k10_b = sum((beta_k10-beta)^2)
   loss_kn_b = sum((beta_kn-beta)^2)
   
-  loss_ols_xb = sum((X%*%beta_ols-Xbeta)^2)
-  loss_k5_xb = sum((X%*%beta_k5-Xbeta)^2)
-  loss_k10_xb = sum((X%*%beta_k10-Xbeta)^2)
-  loss_kn_xb = sum((X%*%beta_kn-Xbeta)^2)
+  loss_ols_xb = sum((Xmat%*%beta_ols-Xbeta)^2)
+  loss_k5_xb = sum((Xmat%*%beta_k5-Xbeta)^2)
+  loss_k10_xb = sum((Xmat%*%beta_k10-Xbeta)^2)
+  loss_kn_xb = sum((Xmat%*%beta_kn-Xbeta)^2)
   
   return(c(loss_ols_b, loss_k5_b, loss_k10_b, loss_kn_b, loss_ols_xb, loss_k5_xb, loss_k10_xb, loss_kn_xb))
 }
 
 
-
+#4:51
 lambda = 10^(seq(-8,8,0.5))
-test = ridgeSim(X1,beta1,lambda,sigma.star)
-test2 = ridgeSim(X2,beta1,lambda,sigma.star)
-test3 = ridgeSim(X3,beta2,lambda,sigma.star)
-test4 = ridgeSim(X4,beta2,lambda,sigma.star)
+test = ridgeSim(X1,beta1,lambda,sigma.star,n.cores=4)
+test2 = ridgeSim(X2,beta1,lambda,sigma.star,n.cores=4)
+test3 = ridgeSim(X3,beta2,lambda,sigma.star,n.cores=4)
+test4 = ridgeSim(X4,beta2,lambda,sigma.star,n.cores=4)
 
 save(test, file="~/Documents/mcgill/math680/assignment2/dat4a.RData")
 save(test2, file="~/Documents/mcgill/math680/assignment2/dat4a2.RData")

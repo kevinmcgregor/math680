@@ -20,19 +20,18 @@ ridgeCrossval = function(X, y, lam.vec, K) {
   train = NULL
   beta = NULL
   count=1
-  for (lam in lam.vec) {
-    tot_err_k = 0
-    for (j in 1:K) {
-      train = centeredRidge(X[groups!=j,], y[groups!=j], lam)
-      beta = c(train$b1, train$b)
-      tot_err_k = tot_err_k + sum((y[groups==j]-X[groups==j,]%*%beta)^2)
+  tot_err_k = rep(0, length(lam.vec))
+  for (j in 1:K) {
+    train = centeredRidge(X[groups!=j,], y[groups!=j], lam.vec)
+    beta = cbind(train$b1, t(train$b))
+    for (i in 1:length(lam.vec)) {
+      tot_err_k[i] = tot_err_k[i] + sum((y[groups==j]-X[groups==j,]%*%beta[i,])^2)
     }
-    cv.error[count] = tot_err_k / n
-      
-    count=count+1
   }
   
-  best.lam = lam.vec[cv.error==min(cv.error)]
+  cv.error = tot_err_k / n    
+  
+  best.lam = lam.vec[which.min(cv.error)]
   finalfit = centeredRidge(X, y, best.lam)
   
   return(list(b1=finalfit$b1, b=finalfit$b, best.lam=best.lam, cv.error=cv.error))
@@ -62,7 +61,7 @@ makeFolds = function(n,K) {
 
 #Testing
 #set.seed(342)
-#n=50; p=40; sigma=2
+#n=500; p=40; sigma=2
 #X=cbind(1, matrix(rnorm(n*p), nrow=n, ncol=p))
 #Xtilde = scale(X[,-1], scale=FALSE)
 #beta.star=c(1,runif(p,-5,5))
