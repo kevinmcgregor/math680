@@ -24,3 +24,8 @@ theor_betaexpect = qr.solve(crossprod(Xtilde, Xtilde)+lambda*diag(p))%*%crosspro
 betavar = (n-1)/n * cov(t(betarep))
 theor_betavar = sigma*qr.solve(crossprod(Xtilde, Xtilde)+lambda*diag(p))%*%t(Xtilde)%*%
                     t(qr.solve(crossprod(Xtilde, Xtilde)+lambda*diag(p))%*%t(Xtilde))
+
+save(betaexpect, theor_betaexpect, betavar, theor_betavar, file="~/Documents/mcgill/math680/assignment2/dataq2.RData")
+
+
+

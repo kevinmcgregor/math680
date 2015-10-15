@@ -73,7 +73,16 @@ ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200, n.cores=1) {
   Xbeta = X%*%beta
   y = replicate(numrep, Xbeta + rnorm(n, 0, sqrt(sigma.star)), simplify=FALSE)
   
-  losses = mclapply(y, FUN=getLosses, Xmat=X, beta=beta, Xbeta=Xbeta, lam.vec=lam.vec, sigma.star=sigma.star, mc.cores = n.cores)
+  #SVD doesn't change over different replications, so just calculate it now
+  Xtilde = scale(X[,-1], scale=FALSE)
+  p = NCOL(Xtilde)
+  SVD = svd(Xtilde, nu=n, nv=p)
+  
+  losses = mclapply(y, FUN=getLosses, Xmat=X, beta=beta, Xbeta=Xbeta, lam.vec=lam.vec, 
+                   SVD=SVD, sigma.star=sigma.star, mc.cores = n.cores)
+  
+  #losses = lapply(y, FUN=getLosses, Xmat=X, beta=beta, Xbeta=Xbeta, lam.vec=lam.vec, 
+  #                  SVD=SVD, sigma.star=sigma.star)
   
   loss_ols_b = sapply(losses, function(x){x[1]})
   loss_k5_b = sapply(losses, function(x){x[2]})
@@ -97,15 +106,15 @@ ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200, n.cores=1) {
 }
 
 # A function to do the fitting and calculate losses. Main function to be included in parallel step  
-getLosses = function(y, Xmat, beta, Xbeta, lam.vec, sigma.star) {
+getLosses = function(y, Xmat, beta, Xbeta, lam.vec, SVD, sigma.star) {
   
   y=unlist(y)
   n = NROW(Xmat)
   
   
-  k5 = ridgeCrossval(Xmat, y, lam.vec, 5)
-  k10 = ridgeCrossval(Xmat, y, lam.vec, 10)
-  kn = ridgeCrossval(Xmat, y, lam.vec, n)
+  k5 = ridgeCrossval(Xmat, y, lam.vec, 5, SVD)
+  k10 = ridgeCrossval(Xmat, y, lam.vec, 10, SVD)
+  kn = ridgeCrossval(Xmat, y, lam.vec, n, SVD)
   
   beta_ols = lm.fit(Xmat, y)$coefficients
   beta_k5 = c(k5$b1, k5$b)
@@ -128,7 +137,7 @@ getLosses = function(y, Xmat, beta, Xbeta, lam.vec, sigma.star) {
 
 #4:51
 lambda = 10^(seq(-8,8,0.5))
-test = ridgeSim(X1,beta1,lambda,sigma.star,n.cores=4)
+test = ridgeSim(X1,beta1,lambda,sigma.star, n.cores=4)
 test2 = ridgeSim(X2,beta1,lambda,sigma.star,n.cores=4)
 test3 = ridgeSim(X3,beta2,lambda,sigma.star,n.cores=4)
 test4 = ridgeSim(X4,beta2,lambda,sigma.star,n.cores=4)

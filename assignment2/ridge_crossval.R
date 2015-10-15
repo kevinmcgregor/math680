@@ -5,7 +5,9 @@ source("~/Documents/mcgill/math680/assignment2/centeredRidge_func.R")
 # y is the reponse vector
 # lam.vec is a vector of lambda values to iterate over
 # K is the number of folds in the cross validation
-ridgeCrossval = function(X, y, lam.vec, K) {
+# SVD is an optional variable to take in a predefined (full) singular value decomposition to save time
+#   in a simulation with multiple replications
+ridgeCrossval = function(X, y, lam.vec, K, SVD=NULL) {
   n = length(y)
   if (!(K %in% 2:n)) stop("K must be one of 2, 3,..., n")
   if (!is.matrix(X)) stop("X must be a matrix")
@@ -22,7 +24,13 @@ ridgeCrossval = function(X, y, lam.vec, K) {
   count=1
   tot_err_k = rep(0, length(lam.vec))
   for (j in 1:K) {
-    train = centeredRidge(X[groups!=j,], y[groups!=j], lam.vec)
+    if (is.null(SVD)) {
+      train = centeredRidge(X[groups!=j,], y[groups!=j], lam.vec)
+    } else {
+      newu = SVD$u[groups!=j,]
+      newSVD = list(u=newu,d=SVD$d,v=SVD$v)
+      train = centeredRidge(X[groups!=j,], y[groups!=j], lam.vec, newSVD, n)
+    }
     beta = cbind(train$b1, t(train$b))
     for (i in 1:length(lam.vec)) {
       tot_err_k[i] = tot_err_k[i] + sum((y[groups==j]-X[groups==j,]%*%beta[i,])^2)
@@ -32,7 +40,7 @@ ridgeCrossval = function(X, y, lam.vec, K) {
   cv.error = tot_err_k / n    
   
   best.lam = lam.vec[which.min(cv.error)]
-  finalfit = centeredRidge(X, y, best.lam)
+  finalfit = centeredRidge(X, y, best.lam, SVD, n)
   
   return(list(b1=finalfit$b1, b=finalfit$b, best.lam=best.lam, cv.error=cv.error))
 }
