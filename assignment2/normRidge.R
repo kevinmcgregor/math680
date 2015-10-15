@@ -1,7 +1,7 @@
 #A function to do normal likelihood ridge estimator.
 
 
-normRidge = function(X,y,lam, tol=1e-12) {
+normRidge = function(X,y,lam, tolbet=1e-12, tolsig=1e-8) {
   
   Xc = scale(X[,-1], scale = FALSE)
   yc = scale(y, scale = FALSE)
@@ -15,7 +15,7 @@ normRidge = function(X,y,lam, tol=1e-12) {
   beta.cur = rep(0,p)
   sigma2.new = 1
   sigma2.cur = 0
-  while (sum((beta.new-beta.cur)^2) > tol & (sigma2.new-sigma2.cur)^2 > tol) {
+  while (sum(abs(beta.new-beta.cur)) > tolbet & abs(sigma2.new-sigma2.cur) > tolsig) {
     beta.cur=beta.new; sigma2.cur=sigma2.new
     #Update beta holding sigma constant
     beta.new = beta.cur + changeBeta(beta.cur,Xc,yc,lam,sigma2.cur)

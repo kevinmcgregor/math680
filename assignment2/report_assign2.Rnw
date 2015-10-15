@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage[letterpaper, portrait, margin=1in]{geometry}
+\usepackage{amsmath}
 
 \title{Math 680 - Assignment \#2}
 \author{Kevin McGregor}
@@ -63,7 +64,7 @@ since $var[\tilde{Y}]=\sigma^2_* I$.
 
 \vspace{0.5in}
 
-In the simulation study, we independently generate $Y$ 1000 times.  The R code for this can be seen in the file ``a2\_q2d.R''. Figure~\ref{fig:q2_graphs} plots the theoretical vs. observed expectation and variance.  Since most points fall close to the diagonal, the observed expectation and variance were close to the theoretical values.
+In the simulation study, we independently generate $Y$ 1000 times.  The R code for this can be seen in the file ``a2\_q2d.R''. Figure~\ref{fig:q2_graphs} plots the theoretical vs. observed expectation and variance (i.e. the individual elements of each vector or matrix).  Since most points fall close to the diagonal, the observed expectation and variance were close to the theoretical values.
 
 
 <<q2_graphs, echo=FALSE, fig.show='asis', fig.height=4, fig.cap="Observed vs. Theoretical Expectation and Variance for the centered ridge estimator">>=
@@ -78,6 +79,92 @@ plot(theor_betavar, betavar,main="Variance", xlab="Theoretical", ylab="Observed"
 See R code in ``ridge\_crossval.R''.
 
 \section*{Question 4}
+The simulation setup and top-level function (ridgeSim) are in the file ``a2\_q4.R''.  The function ridgeSim also calls functions from the files ``centeredRidge\_func.R'' and ``ridge\_crossval.R''.  It calculates the singular value decomposition only once, then selects the proper rows for each iteration of the cross-validation step. 
+
+\begin{table}[!htb]
+    \caption{Losses for the various simulation scenarios when $p=50$}
+    \begin{minipage}{.5\linewidth}
+      \caption{$\theta=0.5$}
+      \centering
+      \begin{tabular}{|llrr|}
+       \hline
+     Param & Type & Average loss & SE loss \\ 
+      \hline
+   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
+   & $K=5$  & 0.7416 & 0.1885 \\ 
+   & $K=10$ & 0.7400 & 0.1872 \\ 
+   & $K=n$ & 0.7275 & 0.1840 \\ 
+   \hline
+    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
+    & $K=5$ & 26.9697 & 5.9619 \\ 
+    & $K=10$ & 26.9092 & 5.9876 \\ 
+    & $K=n$ & 26.6653 & 5.8784 \\ 
+    \hline
+  \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+      \centering
+        \caption{$\theta=0.9$ CHANGE VALUES HERE!}
+        \begin{tabular}{|llrr|}
+       \hline
+     Param & Type & Average loss & SE loss \\ 
+      \hline
+   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
+   & $K=5$  & 0.7416 & 0.1885 \\ 
+   & $K=10$ & 0.7400 & 0.1872 \\ 
+   & $K=n$ & 0.7275 & 0.1840 \\ 
+   \hline
+    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
+    & $K=5$ & 26.9697 & 5.9619 \\ 
+    & $K=10$ & 26.9092 & 5.9876 \\ 
+    & $K=n$ & 26.6653 & 5.8784 \\ 
+    \hline
+  \end{tabular}
+    \end{minipage} 
+\end{table}
+ 
+\begin{table}[!htb]
+    \caption{Losses for the various simulation scenarios when $p=1000$}
+    \begin{minipage}{.5\linewidth}
+      \caption{$\theta=0.5$}
+      \centering
+      \begin{tabular}{|llrr|}
+       \hline
+     Param & Type & Average loss & SE loss \\ 
+      \hline
+   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
+   & $K=5$  & 0.7416 & 0.1885 \\ 
+   & $K=10$ & 0.7400 & 0.1872 \\ 
+   & $K=n$ & 0.7275 & 0.1840 \\ 
+   \hline
+    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
+    & $K=5$ & 26.9697 & 5.9619 \\ 
+    & $K=10$ & 26.9092 & 5.9876 \\ 
+    & $K=n$ & 26.6653 & 5.8784 \\ 
+    \hline
+  \end{tabular}
+  \end{minipage}%
+  \begin{minipage}{.5\linewidth}
+      \centering
+        \caption{$\theta=0.9$ CHANGE VALUES HERE!}
+        \begin{tabular}{|llrr|}
+       \hline
+     Param & Type & Average loss & SE loss \\ 
+      \hline
+   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
+   & $K=5$  & 0.7416 & 0.1885 \\ 
+   & $K=10$ & 0.7400 & 0.1872 \\ 
+   & $K=n$ & 0.7275 & 0.1840 \\ 
+   \hline
+    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
+    & $K=5$ & 26.9697 & 5.9619 \\ 
+    & $K=10$ & 26.9092 & 5.9876 \\ 
+    & $K=n$ & 26.6653 & 5.8784 \\ 
+    \hline
+  \end{tabular}
+    \end{minipage} 
+\end{table}
+
 
 \section*{Question 5}
 \subsection*{(a)}
@@ -103,10 +190,100 @@ The second derivative with respect to $\sigma^2$ is given by:
 \end{eqnarray*}
 Since this could be negative, we know that $g$ cannot be convex.
 
+\subsection*{(c)}
+COME BACK TO THIS
+
+\subsection*{(d)}
+Using Newton's method, the algorithm is as follows:
+\begin{enumerate}
+  \item Initialize $\beta_{(k)}$ and $\sigma^2_{(k)}$, and set $k=1$.
+  \item Update only $\beta$: $\beta^\prime=\beta_{(k)}-\nabla^2_\beta g(\beta_{(k)},\sigma^2_{(k)})^{-1}\nabla_\beta g(\beta_{(k)},\sigma^2_{(k)})$
+  \item Now update only $\sigma^2$, but using the new value of $\beta$:  $(\sigma^2)^\prime = \sigma^2_{(k)} - \nabla^2_{\sigma^2} g(\beta^\prime,\sigma^2_{(k)})^{-1} \nabla_{\sigma^2} g(\beta^\prime,\sigma^2_{(k)})$
+  \item Set $k=k+1$, $\beta_{(k)} = \beta^\prime$, and $\sigma^2_{(k)} = (\sigma^2)^\prime $
+  \item If $\|\beta_{(k)}-\beta_{(k-1)}\|^2 < \epsilon$ and $(\sigma^2_{(k)}-\sigma^2_{(k-1)})^2 < \delta$, then stop.  Otherwise, go back to step 2.
+\end{enumerate}
+
+\subsection*{(e)}
+See R code in ``normRidge.R''
+
+\subsection*{(f)}
+The code for the simulation can be found in the file ``a2\_q5f.R''.  The summary of the gradient with respect to $\beta$ after this run is found in Table~\ref{tab:normridge}.  The table shows that all the components of the gradient are close to zero, as required to find the minimum.  Additionally, the derivative with respect to $\sigma^2$ is zero.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|r|}
+  \hline
+ Component of $\beta^{(\lambda,ML)}_{-1}$ & Value \\ 
+  \hline
+  \hline
+1 & -7.27e-08 \\ 
+  2 & -7.43e-08 \\ 
+  3 & -6.66e-08 \\ 
+  4 & -6.52e-08 \\ 
+  5 & -6.30e-08 \\ 
+  6 & -7.14e-08 \\ 
+  7 & -7.00e-08 \\ 
+  8 & -7.13e-08 \\ 
+  9 & -7.10e-08 \\ 
+  10 & -6.75e-08 \\ 
+   \hline
+\end{tabular}
+\caption{The observed gradient for $\beta$ found by normal likelihood ridge regression}
+\label{tab:normridge}
+\end{table}
+
 \section*{Question 6}
+\subsection*{(a)}
+\begin{eqnarray*}
+  g(\beta) &=& \frac{1}{2}\|\tilde{Y}-\tilde{X}\beta\|^2 + \frac{\lambda_1}{2} \|\beta\|^2 + \frac{\lambda_2}{2} \sum_{j=2}^{p} \left( \beta_j - \beta_{j-1} \right)^2 \\
+  &=& \frac{1}{2}\left(\tilde{Y}^\top\tilde{Y}-2\tilde{X}^\top\beta^\top\tilde{Y}+\beta^\top\tilde{X}^\top\tilde{X}\beta\right) + \frac{\lambda_1}{2} \beta^\top\beta + \frac{\lambda_2}{2} \left( \sum_{j=2}^p \beta_j^2 - 2\sum_{j=2}^p \beta_j\beta_{j-1} + \sum_{j=2}^p \beta_{j-1}^2  \right)
+\end{eqnarray*}
+Differentiating with respect to $\beta$ gives us:
+\begin{eqnarray*}
+  \nabla_\beta g(\beta) &=& -\tilde{X}^\top\tilde{Y} + \tilde{X}^\top\tilde{X}\beta + \lambda_1\beta + \lambda_2 M \beta,
+\end{eqnarray*}
+where $M$ is a $p \times p$ matrix, written as:
 
+\[
+M
+=
+\begin{bmatrix}
+    1 & -1 & 0 & 0 & 0 & \dots & 0 \\
+    0 & -1 & 2 & -1 & 0 & \dots  & 0 \\
+    0 & 0 & -1 & 2 & -1 & \dots & 0 \\
+    \vdots &  &  &  &  & \ddots & \vdots \\
+    0 & & \dots &  & 0 & -1  & 1
+\end{bmatrix}
+\]
+Calculating the second derivative results in:
+\begin{eqnarray*}
+  \nabla^2_\beta g(\beta) &=& \tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M.
+\end{eqnarray*}
+When $\lambda_1>0$ and $\lambda_2>0$, the matrix $\nabla^2_\beta g(\beta)$ is positive definite.  Therefore, the function $g(\beta)$ is strictly convex.
 
+\subsection*{(b)}
+Setting the gradient to zero gives us the solution $\hat{\beta}^{\lambda_1,\lambda_2}_{-1}=(\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1} \tilde{X}^\top\tilde{Y}$. The expressions for the expectation and variance of $\hat{\beta}^{\lambda_1,\lambda_2}_{-1}$ are:
+\begin{eqnarray*}
+  E(\hat{\beta}^{\lambda_1,\lambda_2}_{-1}) &=& E\left[ (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1} \tilde{X}^\top\tilde{Y} \right] \\
+  &=& (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1}\tilde{X}^\top E[\tilde{Y}] \\
+  &=& (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1}\tilde{X}^\top\tilde{X}\beta_*
+\end{eqnarray*}
+and similarly,
+\begin{eqnarray*}
+  var(\hat{\beta}^{\lambda_1,\lambda_2}_{-1}) &=& var\left[ (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1} \tilde{X}^\top\tilde{Y} \right] \\
+  &=& \left[ (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1} \tilde{X}^\top \right] var[\tilde{Y}] \left[ (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1} \tilde{X}^\top \right]^\top \\
+  &=& \sigma^2_* \left[ (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1} \tilde{X}^\top \right]  \left[ (\tilde{X}^\top\tilde{X} + \lambda_1 I + \lambda_2 M)^{-1} \tilde{X}^\top \right]^\top,
+\end{eqnarray*}
+since $var[\tilde{Y}]=\sigma^2_* I$.
 
+The code to do a fused ridge regression is found in ``fusedRidge.R'', and the code for the simulation study is found in ``a2\_q6b.R''.  In Figure~\ref{fig:q6_graphs} we plot the observed elements of the expectation and variance of $\hat{\beta}^{\lambda_1,\lambda_2}_{-1}$ versus the theoretical values.  This shows that the  observed values are very close to the theoretical values, as all the points lie near the diagonal.
+
+<<q6_graphs, echo=FALSE, fig.show='asis', fig.height=4, fig.cap="Observed vs. Theoretical Expectation and Variance for the fused ridge estimator">>=
+load("~/Documents/mcgill/math680/assignment2/dataq6.RData")
+par(mfrow=c(1,2))
+plot(theor_betaexpect, betaexpect,main="Expected value", xlab="Theoretical", ylab="Observed"); abline(0,1,col="red")
+plot(theor_betavar, betavar,main="Variance", xlab="Theoretical", ylab="Observed"); abline(0,1,col="red")
+@
 
 
 

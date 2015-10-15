@@ -1,4 +1,5 @@
 #Testing out the normal ridge regression function
+source("~/Documents/mcgill/math680/assignment2/normRidge.R")
 
 #Testing out the function (borrowed from Notes 2)
 set.seed(680)
@@ -18,3 +19,5 @@ sigma.nr = tmp$sigma2
 grad.beta = (crossprod(Xtilde)%*%beta.nr - crossprod(Xtilde, ytilde))/sigma.nr + lambda*beta.nr
 grad.sigma = n/sigma.nr - (crossprod(ytilde)-2*crossprod(Xtilde%*%beta.nr,ytilde)+crossprod(Xtilde%*%beta.nr,Xtilde)%*%beta.nr)/(sigma.nr)^2
 
+#making latex table
+xtable(grad.beta, display=c("d", "e"))

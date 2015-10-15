@@ -73,7 +73,7 @@ ridgeSim = function(X, beta, lam.vec, sigma.star, numrep=200, n.cores=1) {
   Xbeta = X%*%beta
   y = replicate(numrep, Xbeta + rnorm(n, 0, sqrt(sigma.star)), simplify=FALSE)
   
-  #SVD doesn't change over different replications, so just calculate it now
+  #Calculate SVD now, and can extract proper rows in cross validation step
   Xtilde = scale(X[,-1], scale=FALSE)
   p = NCOL(Xtilde)
   SVD = svd(Xtilde, nu=n, nv=p)
@@ -142,12 +142,19 @@ test2 = ridgeSim(X2,beta1,lambda,sigma.star,n.cores=4)
 test3 = ridgeSim(X3,beta2,lambda,sigma.star,n.cores=4)
 test4 = ridgeSim(X4,beta2,lambda,sigma.star,n.cores=4)
 
-save(test, file="~/Documents/mcgill/math680/assignment2/dat4a.RData")
-save(test2, file="~/Documents/mcgill/math680/assignment2/dat4a2.RData")
-save(test3, file="~/Documents/mcgill/math680/assignment2/dat4a3.RData")
-save(test4, file="~/Documents/mcgill/math680/assignment2/dat4a4.RData")
+#save(test, file="~/Documents/mcgill/math680/assignment2/dat4a.RData")
+#save(test2, file="~/Documents/mcgill/math680/assignment2/dat4a2.RData")
+#save(test3, file="~/Documents/mcgill/math680/assignment2/dat4a3.RData")
+#save(test4, file="~/Documents/mcgill/math680/assignment2/dat4a4.RData")
 
-#ty = X1%*%beta1 + rnorm(100,0,0.5)
-#tyfit = lm.fit(X1, ty)
+#########
+#Getting tables from run on Rstudio server
+load("~/Documents/mcgill/math680/assignment2/dat4a.RData")
+load("~/Documents/mcgill/math680/assignment2/dat4a2.RData")
+load("~/Documents/mcgill/math680/assignment2/dat4a3.RData")
+load("~/Documents/mcgill/math680/assignment2/dat4a4.RData")
+
+xtable(test, digits = 4)
+
 
 

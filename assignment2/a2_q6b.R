@@ -39,5 +39,7 @@ betavar = (n-1)/n * cov(t(betarep))
 theor_betavar = sigma*qr.solve(crossprod(Xtilde, Xtilde)+lam1*diag(p)+lam2*M)%*%t(Xtilde)%*%
   t(qr.solve(crossprod(Xtilde, Xtilde)+lam1*diag(p)+lam2*M)%*%t(Xtilde))
 
+save(betaexpect, theor_betaexpect, betavar, theor_betavar, file="~/Documents/mcgill/math680/assignment2/dataq6.RData")
+
 
 
