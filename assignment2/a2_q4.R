@@ -155,6 +155,6 @@ load("~/Documents/mcgill/math680/assignment2/dat4a3.RData")
 load("~/Documents/mcgill/math680/assignment2/dat4a4.RData")
 
 xtable(test, digits = 4)
-
-
-
+xtable(test2, digits = 4)
+xtable(test3, digits = 2)
+xtable(test4, digits = 2)

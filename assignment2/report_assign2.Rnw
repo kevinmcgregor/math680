@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[letterpaper, portrait, margin=1in]{geometry}
 \usepackage{amsmath}
+\usepackage{subcaption}
 
 \title{Math 680 - Assignment \#2}
 \author{Kevin McGregor}
@@ -79,90 +80,96 @@ plot(theor_betavar, betavar,main="Variance", xlab="Theoretical", ylab="Observed"
 See R code in ``ridge\_crossval.R''.
 
 \section*{Question 4}
-The simulation setup and top-level function (ridgeSim) are in the file ``a2\_q4.R''.  The function ridgeSim also calls functions from the files ``centeredRidge\_func.R'' and ``ridge\_crossval.R''.  It calculates the singular value decomposition only once, then selects the proper rows for each iteration of the cross-validation step. 
+The simulation setup and top-level function (ridgeSim) are in the file ``a2\_q4.R''.  The function ridgeSim also calls functions from the files ``centeredRidge\_func.R'' and ``ridge\_crossval.R''.  It calculates the singular value decomposition only once, then selects the proper rows for each iteration of the cross-validation step.  In the simulations with $p=1000$, the ordinary least squares fit failed, and unfortunatly I did not have enough time to redo this.  Results can be found in Table~\ref{tab:p50} and Table~\ref{tab:p1000}.
+
 
 \begin{table}[!htb]
     \caption{Losses for the various simulation scenarios when $p=50$}
-    \begin{minipage}{.5\linewidth}
+    \label{tab:p50}
+    \begin{subtable}{.5\linewidth}
       \caption{$\theta=0.5$}
       \centering
       \begin{tabular}{|llrr|}
        \hline
      Param & Type & Average loss & SE loss \\ 
       \hline
-   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
-   & $K=5$  & 0.7416 & 0.1885 \\ 
-   & $K=10$ & 0.7400 & 0.1872 \\ 
-   & $K=n$ & 0.7275 & 0.1840 \\ 
-   \hline
-    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
-    & $K=5$ & 26.9697 & 5.9619 \\ 
-    & $K=10$ & 26.9092 & 5.9876 \\ 
-    & $K=n$ & 26.6653 & 5.8784 \\ 
+  $\beta$ & OLS & 0.7614 & 0.2025 \\ 
+  & $K=5$ & 0.7416 & 0.1885 \\ 
+  & $K=10$ & 0.7400 & 0.1872 \\ 
+  & $K=n$ & 0.7275 & 0.1840 \\ 
+  \hline
+  $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
+  & $K=5$ & 26.9697 & 5.9619 \\ 
+  & $K=10$ & 26.9092 & 5.9876 \\ 
+  & $K=n$ & 26.6653 & 5.8784 \\ 
     \hline
   \end{tabular}
-  \end{minipage}%
-  \begin{minipage}{.5\linewidth}
+  \end{subtable}%
+  \begin{subtable}{.5\linewidth}
       \centering
-        \caption{$\theta=0.9$ CHANGE VALUES HERE!}
+        \caption{$\theta=0.9$}
         \begin{tabular}{|llrr|}
        \hline
      Param & Type & Average loss & SE loss \\ 
       \hline
-   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
-   & $K=5$  & 0.7416 & 0.1885 \\ 
-   & $K=10$ & 0.7400 & 0.1872 \\ 
-   & $K=n$ & 0.7275 & 0.1840 \\ 
-   \hline
-    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
-    & $K=5$ & 26.9697 & 5.9619 \\ 
-    & $K=10$ & 26.9092 & 5.9876 \\ 
-    & $K=n$ & 26.6653 & 5.8784 \\ 
+  $\beta$ & OLS & 4.7030 & 1.4635 \\ 
+  & $K=5$ & 4.4790 & 1.2592 \\ 
+  & $K=10$ & 4.4578 & 1.2733 \\ 
+  & $K=n$ & 4.4965 & 1.2758 \\ 
+  \hline
+  $\tilde{X}\beta$ & OLS & 24.5898 & 5.1006 \\ 
+  & $K=5$ & 43.8779 & 9.4545 \\ 
+  & $K=10$ & 43.7444 & 9.3660 \\ 
+  & $K=n$ & 43.6703 & 8.9286 \\ 
     \hline
   \end{tabular}
-    \end{minipage} 
+    \end{subtable} 
 \end{table}
+
+
+
  
 \begin{table}[!htb]
     \caption{Losses for the various simulation scenarios when $p=1000$}
-    \begin{minipage}{.5\linewidth}
+    \label{tab:p1000}
+    \begin{subtable}{.5\linewidth}
       \caption{$\theta=0.5$}
       \centering
       \begin{tabular}{|llrr|}
        \hline
      Param & Type & Average loss & SE loss \\ 
       \hline
-   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
-   & $K=5$  & 0.7416 & 0.1885 \\ 
-   & $K=10$ & 0.7400 & 0.1872 \\ 
-   & $K=n$ & 0.7275 & 0.1840 \\ 
-   \hline
-    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
-    & $K=5$ & 26.9697 & 5.9619 \\ 
-    & $K=10$ & 26.9092 & 5.9876 \\ 
-    & $K=n$ & 26.6653 & 5.8784 \\ 
+  $\beta$ & OLS & NA & NA \\ 
+  & $K=5$ & 434.20 & 3.68 \\ 
+  & $K=10$ & 433.46 & 2.19 \\ 
+  & $K=n$ & 446.70 & 1.11 \\ 
+  \hline
+  $\tilde{X}\beta$ & OLS & NA & NA  \\ 
+  & $K=5$ & 2199.03 & 2984.08 \\ 
+  & $K=10$ & 1587.96 & 1721.32 \\ 
+  & $K=n$ & 12537.21 & 931.73 \\ 
     \hline
   \end{tabular}
-  \end{minipage}%
-  \begin{minipage}{.5\linewidth}
+  \end{subtable}%
+  \begin{subtable}{.5\linewidth}
       \centering
-        \caption{$\theta=0.9$ CHANGE VALUES HERE!}
+        \caption{$\theta=0.9$}
         \begin{tabular}{|llrr|}
        \hline
      Param & Type & Average loss & SE loss \\ 
       \hline
-   $\beta$ & OLS & 0.7614 & 0.2025 \\ 
-   & $K=5$  & 0.7416 & 0.1885 \\ 
-   & $K=10$ & 0.7400 & 0.1872 \\ 
-   & $K=n$ & 0.7275 & 0.1840 \\ 
-   \hline
-    $\tilde{X}\beta$ & OLS & 25.0465 & 4.9994 \\ 
-    & $K=5$ & 26.9697 & 5.9619 \\ 
-    & $K=10$ & 26.9092 & 5.9876 \\ 
-    & $K=n$ & 26.6653 & 5.8784 \\ 
+  $\beta$ & OLS & NA & NA \\ 
+  & $K=5$ & 462.20 & 5.25 \\ 
+  & $K=10$ & 467.30 & 2.79 \\ 
+  & $K=n$ & 468.09 & 0.46 \\ 
+  \hline
+  $\tilde{X}\beta$ & OLS & NA & NA  \\ 
+  & $K=5$ & 5538.02 & 2978.66 \\ 
+  & $K=10$ & 8437.47 & 1581.00 \\ 
+  & $K=n$ & 8886.17 & 65.73 \\
     \hline
   \end{tabular}
-    \end{minipage} 
+    \end{subtable} 
 \end{table}
 
 
@@ -191,7 +198,7 @@ The second derivative with respect to $\sigma^2$ is given by:
 Since this could be negative, we know that $g$ cannot be convex.
 
 \subsection*{(c)}
-COME BACK TO THIS
+If there exists some $\beta$ such that $\tilde{Y}-\tilde{X}\beta=0$, then the term $\|\tilde{Y}-\tilde{X}\beta\|^2$ disappears.  As $\sigma^2$ tends to infinity, $\log(\sigma^2)$ also increases to infinity, and as $\sigma^2$ tends to zero, $\log(\sigma^2)$ decreases to minus infinity.  Therefore, since $\sigma^2$ has no global minimum, the function $g$ has no global minimum.
 
 \subsection*{(d)}
 Using Newton's method, the algorithm is as follows:
