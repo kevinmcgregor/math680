@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  15 OCT 2015 20:05
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  15 OCT 2015 21:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -297,29 +297,33 @@ Package caption Info: End \AtBeginDocument code.
 [1
 
 {/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Package color Info: Redefining color shadecolor on input line 121.
+Package color Info: Redefining color shadecolor on input line 133.
 
 <figure/q2_graphs-1.pdf, id=15, 505.89pt x 289.08pt>
 File: figure/q2_graphs-1.pdf Graphic file (type pdf)
 
 <use figure/q2_graphs-1.pdf>
-Package pdftex.def Info: figure/q2_graphs-1.pdf used on input line 122.
+Package pdftex.def Info: figure/q2_graphs-1.pdf used on input line 134.
 (pdftex.def)             Requested size: 469.75502pt x 268.43579pt.
- [2 <./figure/q2_graphs-1.pdf>] [3] [4]
-Package color Info: Redefining color shadecolor on input line 339.
+ [2]
 
-<figure/q6_graphs-1.pdf, id=35, 505.89pt x 289.08pt>
+LaTeX Warning: Text page 3 contains only floats.
+
+[3 <./figure/q2_graphs-1.pdf>] [4] [5]
+Package color Info: Redefining color shadecolor on input line 351.
+
+<figure/q6_graphs-1.pdf, id=38, 505.89pt x 289.08pt>
 File: figure/q6_graphs-1.pdf Graphic file (type pdf)
 
 <use figure/q6_graphs-1.pdf>
-Package pdftex.def Info: figure/q6_graphs-1.pdf used on input line 340.
+Package pdftex.def Info: figure/q6_graphs-1.pdf used on input line 352.
 (pdftex.def)             Requested size: 469.75502pt x 268.43579pt.
- [5] [6 <./figure/q6_graphs-1.pdf>]
+ [6 <./figure/q6_graphs-1.pdf>]
 (./report_assign2.aux) ) 
 Here is how much of TeX's memory you used:
  3826 strings out of 493315
  57710 string characters out of 6137904
- 140962 words of memory out of 5000000
+ 141962 words of memory out of 5000000
  7229 multiletter control sequences out of 15000+600000
  9852 words of font info for 36 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -337,7 +341,7 @@ mr5.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7
 .pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pf
 b></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 ></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on report_assign2.pdf (6 pages, 163706 bytes).
+Output written on report_assign2.pdf (6 pages, 164017 bytes).
 PDF statistics:
  89 PDF objects out of 1000 (max. 8388607)
  63 compressed objects within 1 object stream

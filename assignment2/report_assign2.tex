@@ -74,9 +74,21 @@ Then, differentiating with respect to $\beta$ gives:
   \nabla_\beta \|Y-X\beta\|^2 &=& -2X^\top Y + 2X^\top X\beta.
 \end{eqnarray*}
 
-So, if we plug in the centered least squares estimate for $\beta$ into this equation, we know it will be a global minimum for the least squares criterion.
-
-WILL COME BACK TO THIS!
+So, if we plug in the centered least squares estimate for $\beta$ into this equation, we know it will be a global minimum for the least squares criterion. As it's in a similar form as ordinary least squares, the solution for centered least squares works out to be: $\hat{\beta}_{-1}=(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top\tilde{Y}$ and $\hat{\beta}_1=\bar{Y}-\bar{x}^\top\hat{\beta}_{-1}$.  Then, we have:
+\begin{eqnarray*}
+  X(\hat{\beta}_1, \hat{\beta}_{-1}^\top)^\top &=& 1_n(\bar{Y}-\bar{x}^\top\hat{\beta}_{-1}) + X_{-1}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top\tilde{Y} \\
+    &=& 1_n\bar{Y}-1_n\bar{x}^\top\hat{\beta}_{-1} + X_{-1}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top\tilde{Y} \\
+    &=& 1_n\bar{Y} + (-1_n\bar{x}^\top+X_{-1})(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top\tilde{Y} \\ 
+    &=& 1_n\bar{Y} + \tilde{X}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top(Y-1_n\bar{Y}) \\
+    &=& (I_n-\tilde{X}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top)1_n\bar{Y} + \tilde{X}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top Y
+\end{eqnarray*}
+and then we have:
+\begin{eqnarray*}
+  X^\top X(\hat{\beta}_1, \hat{\beta}_{-1}^\top)^\top &=& X^\top(I_n-\tilde{X}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top)1_n\bar{Y} + X^\top\tilde{X}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top Y \\
+  &=& X^\top 1_n\bar{Y} + X^\top\tilde{X}(\tilde{X}^\top\tilde{X})^{-1}\tilde{X}^\top Y \\
+  &=& X^\top Y
+\end{eqnarray*}
+Therefore, $(\hat{\beta}_1, \hat{\beta}_{-1}^\top)^\top$ makes $\nabla_\beta=0$, and so it is a global minimizer.
 
 \section*{Question 2}
 \subsection*{(a)}
