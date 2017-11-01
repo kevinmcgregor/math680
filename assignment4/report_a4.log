@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  11 NOV 2015 23:36
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  30 NOV 2015 23:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**report_assign3.tex
-(./report_assign3.tex
+**report_a4.tex
+(./report_a4.tex
 LaTeX2e <2011/06/27>
 Babel <3.9f> and hyphenation patterns for 78 languages loaded.
 (/usr/local/texlive/2013/texmf-dist/tex/latex/base/article.cls
@@ -273,23 +273,23 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 )
-(./report_assign3.aux)
-\openout1 = `report_assign3.aux'.
+(./report_a4.aux)
+\openout1 = `report_a4.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
 
 (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -354,7 +354,7 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \AtBeginShipoutBox=\box29
-Package hyperref Info: Link coloring OFF on input line 59.
+Package hyperref Info: Link coloring OFF on input line 61.
 (/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -363,51 +363,46 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count119
 )
-LaTeX Info: Redefining \ref on input line 59.
-LaTeX Info: Redefining \pageref on input line 59.
-LaTeX Info: Redefining \nameref on input line 59.
+LaTeX Info: Redefining \ref on input line 61.
+LaTeX Info: Redefining \pageref on input line 61.
+LaTeX Info: Redefining \nameref on input line 61.
 
-(./report_assign3.out) (./report_assign3.out)
+(./report_a4.out) (./report_a4.out)
 \@outlinefile=\write3
-\openout3 = `report_assign3.out'.
+\openout3 = `report_a4.out'.
 
  [1
 
-{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Package color Info: Redefining color shadecolor on input line 169.
+{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (37.85542pt too wide) in paragraph at lines 114--115
+\OT1/cmr/m/it/10 The code to set up the sim-u-la-tion is found in the R file a4
+[]q2c.R\OT1/cmr/m/n/10 . I ran the al-go-rithm with $\OML/cmm/m/it/10  \OMS/cm
+sy/m/n/10 2 f\OT1/cmr/m/n/10 1\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 5\OML/cmm/m/it/
+10 ; \OT1/cmr/m/n/10 5\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 3\OML/cmm/m/it/10 ; \OT
+1/cmr/m/n/10 10\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 9\OML/cmm/m/it/10 ; \OT1/cmr/m
+/n/10 50\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 7
+5\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 2\OMS/cmsy/m/n/10 g$\OT1/cmr/m/n/10 ,
+ []
 
-<figure/em_plot1-1.pdf, id=36, 505.89pt x 505.89pt>
-File: figure/em_plot1-1.pdf Graphic file (type pdf)
-
-<use figure/em_plot1-1.pdf>
-Package pdftex.def Info: figure/em_plot1-1.pdf used on input line 170.
-(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
-Package color Info: Redefining color shadecolor on input line 179.
-
-<figure/em_plot2-1.pdf, id=38, 505.89pt x 505.89pt>
-File: figure/em_plot2-1.pdf Graphic file (type pdf)
-
-<use figure/em_plot2-1.pdf>
-Package pdftex.def Info: figure/em_plot2-1.pdf used on input line 180.
-(pdftex.def)             Requested size: 469.75502pt x 469.76265pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 194.
- [3] [4 <./figure/em_plot1-1.pdf>] [5 <./figure/em_plot2-1.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 194.
- (./report_assign3.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 194.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 194.
-Package rerunfilecheck Info: File `report_assign3.out' has not changed.
+[2] [3] [4]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 231.
+ [5]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 231.
+ (./report_a4.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 231.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 231.
+Package rerunfilecheck Info: File `report_a4.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 194.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 231.
  ) 
 Here is how much of TeX's memory you used:
- 6256 strings out of 493315
- 91460 string characters out of 6137904
- 192036 words of memory out of 5000000
- 9624 multiletter control sequences out of 15000+600000
- 9229 words of font info for 34 fonts, out of 8000000 for 9000
+ 6244 strings out of 493315
+ 91144 string characters out of 6137904
+ 190971 words of memory out of 5000000
+ 9613 multiletter control sequences out of 15000+600000
+ 9061 words of font info for 33 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 29i,14n,32p,402b,344s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,9n,32p,436b,344s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -421,12 +416,11 @@ xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texli
 ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
 e/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/
 2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
-13/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/201
-3/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report_assign3.pdf (5 pages, 232883 bytes).
+13/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on report_a4.pdf (5 pages, 168852 bytes).
 PDF statistics:
- 124 PDF objects out of 1000 (max. 8388607)
- 97 compressed objects within 1 object stream
- 22 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 111 PDF objects out of 1000 (max. 8388607)
+ 89 compressed objects within 1 object stream
+ 26 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

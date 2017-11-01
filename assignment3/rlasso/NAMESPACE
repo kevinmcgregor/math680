@@ -1,0 +1,2 @@
+exportPattern(minlassoLSwithC, minlassoLS)
+useDynLib(rlasso)

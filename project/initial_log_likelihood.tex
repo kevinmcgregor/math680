@@ -1,0 +1,133 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[letterpaper, portrait, margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{bbm}
+
+\title{Zero-inflated Tweedie Model with Lasso Penalty}
+\author{Kevin McGregor}
+\date{January 31$^{st}$, 2015}
+
+\newcommand{\lc}{\left(}
+\newcommand{\rc}{\right)}
+\newcommand{\lb}{\left\{}
+\newcommand{\rb}{\right\}}
+\newcommand{\ind}{\mathbbm{1}}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand*{\argminl}{\argmin\limits}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+\section*{Introduction}
+We attempt to model and predict insurance payouts over a given period of time based on a set of predictor variables.  Assume that we have two sets of predictor variables $x_i$, and $z_i$, for each of the observations $i \in 1,\dots,n$. Some or all of the variables may appear in both of these vectors. The sum of each person's payouts over a specified time period is denoted by $y_i$.
+
+In the past, the Tweedie distribution has been used to model data in this setting, due to its flexibility, its relationships with distributions such as Poisson and Gamma, and its (relatively) straightforward formulation as a generalized linear model (GLM).  One remaining problem, however, is that a plurality of subjects in insurance data will have a zero payout.  In order to deal with this problem within the Tweedie GLM, one could either model the dispersion parameter, or set up a zero-inflated model.  In this project we do the latter; that is, we model both the mean of the Tweedie distribution, as well as a parameter specifying whether the payout amount is zero or non-zero.  Additionally, we invoke a Lasso penalty on the parameter  modeling the mean in order to do variable selection.
+
+
+\section*{Formulation of Model}
+
+We start with the density of the Tweedie distribution, where $\mu>0$ is the mean, $\phi>0$ is the dispersion parameter, and $1<\rho<2$ is an additional parameter.  If we take $a(y,\phi)$ to be a normalizing constant, the density will have the form:
+\begin{eqnarray}
+  f(y|\mu,\rho,\phi) &=& a(y,\phi)\exp\lb \frac{1}{\phi} \left(\frac{y\mu^{1-\rho}}{1-\rho} - \frac{\mu^{2-\rho}}{2-\rho} \right) \rb
+\end{eqnarray}
+Introducing the zero-inflation into the model gives us the following density, conditional on the value of $\pi$, which is $1$ if the observed value $y$ comes from the Tweedie distribution, and is $0$ if $y$ comes from the point-mass at $y=0$.
+\begin{eqnarray}
+  f(y|\mu,\rho,\phi, \pi) &=& \left[a(y,\phi)\exp\lb \frac{1}{\phi} \left(\frac{y\mu^{1-\rho}}{1-\rho} - \frac{\mu^{2-\rho}}{2-\rho} \right) \rb \right]^\pi \ind(y=0)^{1-\pi}
+\end{eqnarray}
+In order to find the joint density of $y$ and $\pi$, we notice that:
+\begin{eqnarray}
+  f(y,\pi |\mu,\rho,\phi) &=& f(y|\mu,\rho,\phi, \pi) f(\pi) \\
+  f(y|\mu,\rho,\phi, \pi) &=& \left[a(y,\phi)\exp\lb \frac{1}{\phi} \left(\frac{y\mu^{1-\rho}}{1-\rho} - \frac{\mu^{2-\rho}}{2-\rho} \right) \rb \right]^\pi \ind(y=0)^{1-\pi} q^{1-\pi} (1-q)^\pi ,
+\end{eqnarray}
+where $q$ is the probability of having a zero response, a parameter that will be modeled. Therefore, assuming $\rho$ and $\phi$ are fixed, the log-likelihood is:
+\begin{equation}
+\begin{split}
+  l(\mu,q | y, \pi) = \sum_{i=1}^n \left[ \pi_i\log a(y_i,\phi)+\frac{\pi_i}{\phi}\left(\frac{y\mu^{1-\rho}}{1-\rho} - \frac{\mu^{2-\rho}}{2-\rho} \right) + (1-\pi_i)\log\ind (y_i=0) + \log q_i - \pi_i \log q_i + \pi_i\log(1-q_i) \right]
+\end{split}
+\end{equation}
+Next, we make the following reparameterization, for observed covariates $x_i$, and $z_i$, which may or may not share common variables:
+\begin{eqnarray*}
+  \mu_i = \exp(\beta^\top x_i) & \mbox{and} & \log\lc \frac{1-q_i}{q_i} \rc = \alpha^\top z_i
+\end{eqnarray*}
+The reparameterized log-likelihood is:
+\begin{multline}
+  l(\beta,\alpha | y, \pi) = \sum_{i=1}^n \biggl[ \pi_i\log a(y_i,\phi) + \frac{\pi_i}{\phi}\left(\frac{y_i \exp([1-\rho]\beta^\top x_i)}{1-\rho} - \frac{\exp([2-\rho]\beta^\top x_i)}{2-\rho} \right) \\ + (1-\pi_i)\log\ind (y_i=0) + \log \lc\frac{1}{1+\exp(\alpha^\top z_i)}\rc - \pi_i \alpha^\top z_i \biggr]
+\end{multline}
+Adding the lasso penalty term on the parameter modeling the mean of the Tweedie distribution, we end up with the following optimization problem:
+\begin{equation} 
+  \argminl_{\beta,\alpha} -l(\beta,\alpha | y, \pi) + \lambda\sum_{j=1}^p |\beta_j|
+\label{eqn:optim}
+\end{equation}
+
+\section*{The Algorithm}
+We employ a two-step approach to find the solution to (\ref{eqn:optim}).  First, we can maximize the objective function with respect to $\alpha$, for a fixed $\beta$.  We do this using the Newton-Raphson algorithm.  Since the lasso penalty term does not involve $\alpha$, this term drops out in the differentiation step:
+\begin{equation} 
+  \frac{\partial l}{\partial \alpha} = \sum_{i=1}^n \left[ -z_i \frac{\exp(\alpha^\top z_i)}{1+\exp(\alpha^\top z_i)} - \pi_i z_i \right].
+\end{equation}
+The Hessian matrix is then:
+\begin{equation} 
+  \frac{\partial^2 l}{\partial \alpha^2} = \sum_{i=1}^n \left[ -z_i z_i^\top \frac{\exp(\alpha^\top z_i)}{(1+\exp(\alpha^\top z_i))^2} \right].
+\end{equation}
+So, on the $k^{th}$ iteration, we update $\alpha$ using the following formula:
+\begin{eqnarray} 
+  \alpha_{(k+1)} &=& -\lc-\frac{\partial l}{\partial \alpha}\rc \lc-\frac{\partial^2 l}{\partial \alpha^2}\rc^{-1}\bigg|_{\alpha=\alpha_{(k)}} \\
+  &=&  \sum_{i=1}^n \left[ -z_i \frac{\exp(\alpha_{(k)}^\top z_i)}{1+\exp(\alpha_{(k)}^\top z_i)} - \pi_i z_i \right] \lc \sum_{i=1}^n \left[ -z_i z_i^\top \frac{\exp(\alpha_{(k)}^\top z_i)}{(1+\exp(\alpha_{(k)}^\top z_i))^2} \right] \rc^{-1}.
+\end{eqnarray}
+
+After convergence has been reached, take the final estimate $\hat{\alpha}$ into $-l(\beta,\alpha | y, \pi)$, and then minimize with respect to $\beta$ using a two-step strategy.  First, find the second-order Taylor series approximation $l_Q(\beta_0,\beta)$.  Then we minimize:
+\begin{equation} 
+  -l_Q(\beta_0,\beta) + \lambda\sum_{j=1}^p |\beta_j|,
+\end{equation}
+using blockwise majorization descent.  The details of this part of the algorithm are left as future work.
+The algorithm alternates between minimizing the objective function with respect to $\alpha$ and $\beta$ until some convergence criterion has been achieved for both of these parameters.
+
+\end{document}
